@@ -1,7 +1,9 @@
 package com.dharmik.securex_lite.controller;
 
+import com.dharmik.securex_lite.annotations.CurrentUser;
 import com.dharmik.securex_lite.annotations.Secure;
 import com.dharmik.securex_lite.jwt.JwtUtil;
+import com.dharmik.securex_lite.model.UserContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,14 +23,14 @@ public class TestController {
     }
 
     @Secure(role = "ADMIN")
-    @GetMapping("/admin")
-    public String admin() {
-        return "Welcome Admin";
-    }
+    @GetMapping("/profile")
+    public String profile(
+            @CurrentUser UserContext user
+    ) {
 
-    @Secure(role = "USER")
-    @GetMapping("/user")
-    public String user() {
-        return "Welcome User";
+        return "Hello "
+                + user.getUsername()
+                + " Role: "
+                + user.getRole();
     }
 }
